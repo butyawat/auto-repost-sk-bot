@@ -1,1 +1,0 @@
-# auto-repost-sk-bot
