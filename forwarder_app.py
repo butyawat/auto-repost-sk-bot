@@ -4,16 +4,13 @@ from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filte
 
 print("Forwarder service started...")
 
-# ===== CHANNEL CONFIG =====
-SOURCE_CHANNEL = "matchpredictioncricket"   # without @
+SOURCE_CHANNEL = "matchpredictioncricket"
 DESTINATION_CHANNEL = "@SessionKingTejasvi"
 
-# ===== BOT TOKEN (ENV) =====
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 if not BOT_TOKEN:
-    raise RuntimeError("BOT_TOKEN is missing")
+    raise RuntimeError("BOT_TOKEN not found")
 
-# ===== AUTO FORWARD LOGIC =====
 async def auto_forward(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.channel_post and update.channel_post.chat.username:
         if update.channel_post.chat.username.lower() == SOURCE_CHANNEL.lower():
@@ -23,7 +20,6 @@ async def auto_forward(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 message_id=update.channel_post.message_id
             )
 
-# ===== START APP =====
 app = ApplicationBuilder().token(BOT_TOKEN).build()
 app.add_handler(MessageHandler(filters.ALL, auto_forward))
 app.run_polling()
